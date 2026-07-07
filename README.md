@@ -233,6 +233,29 @@ Open **http://127.0.0.1:8000/chat-room** in your browser.
 
 ---
 
+## 🤖 How I Learned This (AI-Augmented Learning)
+
+This project was built using what I consider the most effective learning method for 2024 and beyond: **learning by building, with an AI as your senior mentor**.
+
+Here is exactly how the process worked:
+
+**I wrote the code. The AI reviewed it.**
+Every route, every model, every function was written by me first. I then asked the AI to review my code, point out what was wrong, and — most importantly — explain *why* it was wrong. The goal was never to get the right answer. The goal was to understand the reason behind the answer.
+
+**Real debugging sessions.**
+Many of the mistakes documented in this README were real bugs I hit during this process. When my WebSocket only responded once, I didn't just ask "what's wrong". I asked "why does this function exit after one message, and what does that tell me about how Python function lifecycles work?" That kind of questioning led to a much deeper understanding than any tutorial could give.
+
+**Concept → Question → Code → Break → Fix → Understand.**
+That was the loop. Not: Watch video → Copy code → Move on.
+
+**Why this approach matters:**
+Senior engineers at top companies use AI tools to write faster, debug smarter, and research architectural decisions in real time. Learning *how* to collaborate with AI effectively — asking the right questions, critically reviewing its output, and building your own mental model — is itself a high-demand engineering skill.
+
+This repository is proof of that process: a working, production-aware FastAPI codebase with honest documentation of every mistake made along the way.
+
+---
+
 ## 🙏 Acknowledgements
 
-Built with purpose, debugged with patience, and documented with honesty as part of a focused AI/ML Engineering learning journey.
+Built with purpose, debugged with patience, and documented with honesty.
+If you are on the same journey — building toward a career in AI/ML Engineering — feel free to connect. Every documented mistake in this repo was a real learning moment, and I hope it helps someone else skip the confusion and get to the understanding faster.
