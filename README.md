@@ -12,12 +12,20 @@ This is not a tutorial copy-paste. This is a **learning journal in code** — bu
 
 ## 🗂️ File Structure
 
-```
+```text
 FastAPi/
 │
-├── practice.py     ← Main file: All 10 FastAPI concepts implemented
-└── README.md       ← This file
+├── practice.py                 ← Main file: All 10 FastAPI concepts implemented
+├── levels/                     ← Step-by-step level implementations
+│   ├── 01_crud_basics.py       ← Level 1-3: Routing, Pydantic, CRUD
+│   ├── 02_image_upload_auth.py ← Level 4-5: File upload, Auth, Lifespan loading
+│   ├── 03_background_tasks.py  ← Level 7: Non-blocking Background Tasks
+│   ├── 04_llm_streaming.py     ← Level 8: Streaming responses (SSE)
+│   └── 05_websockets_chat.py   ← Level 9: Real-time WebSockets chat
+└── README.md                   ← This file
 ```
+
+You can view the individual step-by-step files in the [levels/](file:///c:/Users/91727/Desktop/FastAPi/levels) directory, with [practice.py](file:///c:/Users/91727/Desktop/FastAPi/practice.py) containing the complete unified project code.
 
 ---
 
