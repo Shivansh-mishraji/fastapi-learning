@@ -4,3 +4,15 @@
 __pycache__/
 node_modules/
 *.whl
+
+# Safety rules
+*.pyc
+.env.*
+!.env.example
+*.joblib
+*.pkl
+*.db
+*.sqlite3
+*.log
+Datasets/
+*.csv
