@@ -1,0 +1,6 @@
+# Auto-added safety rules
+.env
+.venv/
+__pycache__/
+node_modules/
+*.whl
