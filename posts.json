@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "tittle": "First Post",
+        "content": "Hello World!"
+    },
+    {
+        "id": 2,
+        "tittle": "FastAPI Basics",
+        "content": "FastAPI is extremely fast and easy to use."
+    },
+    {
+        "id": 3,
+        "tittle": "Pydantic Validation",
+        "content": "Pydantic helps validate data automatically."
+    },
+    {
+        "id": 4,
+        "tittle": "FastAPI Basics",
+        "content": "Another post about FastAPI basics."
+    },
+    {
+        "id": 5,
+        "tittle": "New Tittle",
+        "content": "New Content"
+    }
+]

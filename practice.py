@@ -14,14 +14,25 @@ class Post(BaseModel):
     content : str
 
 
-# using a list as a fake database for now
-# in real projects this would be a real database like postgresql
-posts_db = [
-    {"id": 1, "tittle": "First Post", "content": "Hello World!"},
-    {"id": 2, "tittle": "FastAPI Basics", "content": "FastAPI is extremely fast and easy to use."},
-    {"id": 3, "tittle": "Pydantic Validation", "content": "Pydantic helps validate data automatically."},
-    {"id": 4, "tittle": "FastAPI Basics", "content": "Another post about FastAPI basics."}
-]
+# using a json file as a database
+import os
+import json
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_FILE = os.path.join(BASE_DIR, "posts.json")
+
+def load_posts():
+    if not os.path.exists(DB_FILE):
+        return []
+    with open(DB_FILE, "r") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return []
+
+def save_posts(posts):
+    with open(DB_FILE, "w") as f:
+        json.dump(posts, f, indent=4)
 
 
 # this dictionary will hold the ml model in memory
@@ -63,6 +74,7 @@ def home_page():
 # path parameter - the {id} in the url becomes a function parameter
 @app.get("/post/{id}")
 def get_post(id:int):
+    posts_db = load_posts()
     post = [p for p in posts_db if p['id']==id]
     if len(post)!=0:
         return post
@@ -77,6 +89,7 @@ def get_post(id:int):
 #   so if you filtered by id AND tittle, the tittle filter would overwrite the id filter
 @app.get("/posts")
 def all_posts(id:int = None, tittle:str=None,content:str=None):
+    posts_db = load_posts()
     filtered_posts = posts_db
     if id is not None:
         filtered_posts=[p for p in filtered_posts if p["id"]==id]
@@ -100,11 +113,13 @@ def all_posts(id:int = None, tittle:str=None,content:str=None):
 #   fix is : dict(post) to convert it first
 @app.post("/post")
 def create_post(post:Post):
+    posts_db = load_posts()
     for p in posts_db:      
         if p["id"] == post.id:
             raise HTTPException(status_code=400,
                                 detail="Posts Already Exists")
     posts_db.append(dict(post))
+    save_posts(posts_db)
     return {"Message":"Post Created Successfully", "Post":post}
 
 
@@ -112,10 +127,12 @@ def create_post(post:Post):
 # without the return, it would update the post AND THEN always raise the 404 error
 @app.put("/post")
 def update_post(post:Post):
+    posts_db = load_posts()
     for p in posts_db:
         if p["id"]== post.id:
             p["tittle"]=post.tittle
             p["content"]= post.content
+            save_posts(posts_db)
             return {"Message":"Post updated successfully",
                     "Post":post}
     raise HTTPException(status_code=404, detail="Post does not exist")
@@ -126,9 +143,11 @@ def update_post(post:Post):
 # list.remove(p) is the right method - removes by value
 @app.delete("/post")
 def delete_post(id:int):
+    posts_db = load_posts()
     for p in posts_db:
         if p['id']==id:
             posts_db.remove(p)
+            save_posts(posts_db)
             return {"Message":"Post deleted successfully",
                     "Post":p}
     raise HTTPException(status_code=404, detail="Post not found")
