@@ -71,7 +71,7 @@ def all_posts(id:int = None, tittle:str=None,content:str=None):
 @app.post("/post")
 def create_post(post:Post):
     posts_db = load_posts()
-    for p in posts_db:      
+    for p in posts_db:
         if p["id"] == post.id:
             raise HTTPException(status_code=400,
                                 detail="Posts Already Exists")
@@ -111,7 +111,7 @@ def varify_api_key(api_key:str = Header(...)):
 async def predict_image(file: UploadFile = File(...),api_key :str = Depends(varify_api_key)):
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400,detail="Invalid file type")
-    contents = await file.read() 
+    contents = await file.read()
     file_size = len(contents)
     model = ml_models.get("my_model")
     return {
