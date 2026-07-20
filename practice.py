@@ -26,7 +26,6 @@ class Post(BaseModel):
     tittle : str   # yes this is a typo (should be 'title') but keeping it to be honest
     content : str
 
-
 # using a json file as a database
 import os
 import json
@@ -47,7 +46,6 @@ def save_posts(posts):
     with open(DB_FILE, "w") as f:
         json.dump(posts, f, indent=4)
 
-
 # this dictionary will hold the ml model in memory
 # so we dont reload it on every request (that would be very slow)
 ml_models = {}
@@ -65,7 +63,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan = lifespan)
 
-
 # middleware runs on every single request before and after the route
 # using it here to measure how long each request takes
 # response.headers adds custom info to the http response
@@ -78,11 +75,9 @@ async def log_execution_time(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     return response
 
-
 @app.get("/")
 def home_page():
     return {"message":"Welcome to Home Page"}
-
 
 # path parameter - the {id} in the url becomes a function parameter
 @app.get("/post/{id}")
@@ -94,7 +89,6 @@ def get_post(id:int):
     # learned: must RAISE httpexception, not return it
     # if you return it, fastapi sends it as a 200 ok response (wrong)
     raise HTTPException(status_code=404,detail="Post Not Found")
-
 
 # query parameters - these come after ? in the url like /posts?id=1&tittle=hello
 # mistake i made : forgot to set id=None so it became mandatory and broke the route
@@ -117,7 +111,6 @@ def all_posts(id:int = None, tittle:str=None,content:str=None):
         "Posts":posts_db
             }
 
-
 # post request - takes a request body (the Post model)
 # mistake i made : used post["id"] to access the id - this crashes because
 #   Post is a pydantic OBJECT not a dictionary, should use post.id
@@ -135,7 +128,6 @@ def create_post(post:Post):
     save_posts(posts_db)
     return {"Message":"Post Created Successfully", "Post":post}
 
-
 # mistake i made : forgot to add return inside the if block
 # without the return, it would update the post AND THEN always raise the 404 error
 @app.put("/post")
@@ -149,7 +141,6 @@ def update_post(post:Post):
             return {"Message":"Post updated successfully",
                     "Post":post}
     raise HTTPException(status_code=404, detail="Post does not exist")
-
 
 # mistake i made : used posts_db.pop(p) where p is a dictionary
 # list.pop() needs an INDEX number, not the item itself
@@ -165,7 +156,6 @@ def delete_post(id:int):
                     "Post":p}
     raise HTTPException(status_code=404, detail="Post not found")
 
-
 # dependency injection - this function runs automatically when a route needs it
 # using it for api key auth - in real apps you would check a database or verify a jwt token
 # note: the function name has a typo (varify instead of verify) - keeping it as is, its my real code
@@ -173,7 +163,6 @@ def varify_api_key(api_key:str = Header(...)):
     if api_key != "token":
         raise HTTPException(status_code = 401,detail = "invalid api key")
     return "Varified Successfully"
-
 
 # async def because reading the uploaded file is an i/o operation (not cpu work)
 # mistake i made : checked file.content_type[0:5] == "image/"
@@ -195,7 +184,6 @@ async def predict_image(file: UploadFile = File(...),api_key :str = Depends(vari
         "confidence": 0.97
     }
 
-
 # using regular def (not async) because time.sleep is cpu blocking
 # fastapi runs regular def functions in a thread pool automatically
 # this prevents heavy tasks from blocking the main server
@@ -211,7 +199,6 @@ def analyze_video(filename: str, background_tasks: BackgroundTasks):
     background_tasks.add_task(heavy_model_inference, filename)
     return {"status": "Accepted", "message": f"Processing of '{filename}' has started in the background."}
 
-
 # async generator - uses yield instead of return to send data piece by piece
 # each yield sends one word to the client immediately (no waiting for full response)
 # in real code: replace the loop with 'async for chunk in openai_client.create(..., stream=True)'
@@ -225,7 +212,6 @@ async def mock_llm_generator(prompt: str):
 @app.get("/stream-llm")
 def stream_llm(prompt: str):
     return StreamingResponse(mock_llm_generator(prompt), media_type="text/event-stream")
-
 
 # html for testing the websocket in the browser
 html_code = """
@@ -259,7 +245,6 @@ html_code = """
 @app.get("/chat-room")
 def get_chat_room():
     return HTMLResponse(html_code)
-
 
 # websocket endpoint - keeps a persistent open connection (like a phone call)
 # unlike http which opens and closes a connection for each request
