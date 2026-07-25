@@ -59,7 +59,7 @@ def all_posts(id:int = None, tittle:str=None,content:str=None):
 @app.post("/post")
 def create_post(post:Post):
     posts_db = load_posts()
-    for p in posts_db:      
+    for p in posts_db:
         if p["id"] == post.id:
             raise HTTPException(status_code=400,
                                 detail="Posts Already Exists")
