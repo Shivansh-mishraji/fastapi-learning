@@ -1,3 +1,8 @@
+"""
+01 Crud Basics module.
+Part of the levels package.
+"""
+
 from fastapi import FastAPI , HTTPException
 from pydantic import BaseModel , Field
 
