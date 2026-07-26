@@ -1,3 +1,7 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 from fastapi import FastAPI , HTTPException , UploadFile , File , Depends , Header , BackgroundTasks
 from pydantic import BaseModel , Field
 from contextlib import asynccontextmanager
