@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_FILE = os.path.join(BASE_DIR, "posts.json")
 
 def load_posts():
+    """Handle load posts and return the result."""
     if not os.path.exists(DB_FILE):
         return []
     with open(DB_FILE, "r") as f:
