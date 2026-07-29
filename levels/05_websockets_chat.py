@@ -13,7 +13,7 @@ import json
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_FILE = os.path.join(BASE_DIR, "posts.json")
 
-def load_posts():
+def load_posts(): -> None:
     if not os.path.exists(DB_FILE):
         return []
     with open(DB_FILE, "r") as f:
